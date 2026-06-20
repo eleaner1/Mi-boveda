@@ -15,7 +15,7 @@ jobs:
       - name: Instalar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
 
       - name: Instalar Java
         uses: actions/setup-java@v4
@@ -26,9 +26,12 @@ jobs:
       - name: Configurar Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Descargar astronomy-engine
+      - name: Preparar carpeta www y motor astronomico
         run: |
+          if [ -d WWW ] && [ ! -d www ]; then mv WWW www; fi
+          mkdir -p www
           curl -L -o www/astronomy.browser.js https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.browser.js
+          ls -la www/
 
       - name: Instalar dependencias
         run: npm install
@@ -38,6 +41,15 @@ jobs:
 
       - name: Sincronizar
         run: npx cap sync android
+
+      - name: Forzar permisos de ubicacion en el Manifest
+        run: |
+          MANIFEST=android/app/src/main/AndroidManifest.xml
+          if ! grep -q "ACCESS_FINE_LOCATION" "$MANIFEST"; then
+            sed -i '0,/<manifest[^>]*>/s//&\n    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" \/>\n    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" \/>/' "$MANIFEST"
+          fi
+          echo "==== AndroidManifest.xml ===="
+          cat "$MANIFEST"
 
       - name: Permisos a Gradle
         run: chmod +x android/gradlew
