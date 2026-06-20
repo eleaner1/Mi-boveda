@@ -1,0 +1,17 @@
+{
+  "name": "boveda",
+  "version": "1.0.0",
+  "description": "Bóveda — identifica constelaciones apuntando al cielo",
+  "private": true,
+  "scripts": {
+    "sync": "cap sync"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.1.2",
+    "@capacitor/core": "^6.1.2",
+    "@capacitor/geolocation": "^6.0.1"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.1.2"
+  }
+}

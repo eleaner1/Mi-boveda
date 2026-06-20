@@ -1,0 +1,8 @@
+{
+  "appId": "com.boveda.estrellas",
+  "appName": "Bóveda",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  }
+}
